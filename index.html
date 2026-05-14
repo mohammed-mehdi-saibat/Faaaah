@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAAAAA</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #0a0a0a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: "Impact", sans-serif;
+        overflow: hidden;
+      }
+
+      h1 {
+        color: #fff;
+        font-size: 3rem;
+        margin-bottom: 40px;
+        letter-spacing: 8px;
+        text-transform: uppercase;
+        opacity: 0.85;
+      }
+
+      #btn {
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #ff4444, #aa0000);
+        border: 6px solid #ff0000;
+        box-shadow:
+          0 0 40px #ff000088,
+          0 10px 30px rgba(0, 0, 0, 0.6);
+        cursor: pointer;
+        font-family: "Impact", sans-serif;
+        font-size: 2.2rem;
+        color: white;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        letter-spacing: 4px;
+        transition:
+          transform 0.1s,
+          box-shadow 0.1s;
+        user-select: none;
+      }
+
+      #btn:hover {
+        box-shadow:
+          0 0 60px #ff0000cc,
+          0 10px 40px rgba(0, 0, 0, 0.8);
+        transform: scale(1.05);
+      }
+
+      #btn:active {
+        transform: scale(0.93);
+        box-shadow: 0 0 20px #ff000055;
+      }
+
+      #btn.screaming {
+        animation: shake 0.05s infinite;
+      }
+
+      #text {
+        margin-top: 50px;
+        font-size: 4rem;
+        color: #ff2222;
+        letter-spacing: 6px;
+        min-height: 70px;
+        text-shadow: 0 0 20px #ff0000;
+        transition: opacity 0.2s;
+      }
+
+      @keyframes shake {
+        0% {
+          transform: translate(2px, 1px) rotate(0deg) scale(0.93);
+        }
+        25% {
+          transform: translate(-2px, -1px) rotate(-0.5deg) scale(0.93);
+        }
+        50% {
+          transform: translate(-1px, 2px) rotate(0.5deg) scale(0.93);
+        }
+        75% {
+          transform: translate(2px, -1px) rotate(-0.5deg) scale(0.93);
+        }
+        100% {
+          transform: translate(-2px, 1px) rotate(0deg) scale(0.93);
+        }
+      }
+
+      @keyframes flashbg {
+        0%,
+        100% {
+          background: #0a0a0a;
+        }
+        50% {
+          background: #1a0000;
+        }
+      }
+
+      body.flashing {
+        animation: flashbg 0.1s infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DO NOT PRESS</h1>
+    <button id="btn">PRESS</button>
+    <div id="text"></div>
+    <audio id="faaa" src="/faaa.mp3"></audio>
+    <script>
+      const btn = document.getElementById("btn");
+      const text = document.getElementById("text");
+      let audioCtx = null;
+
+      function getAudioContext() {
+        if (!audioCtx)
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        return audioCtx;
+      }
+
+      function playFaaa() {
+        const sound = document.getElementById("faaa");
+        sound.currentTime = 0;
+        sound.play();
+
+        // Animate text
+        const letters = [
+          "F",
+          "FA",
+          "FAA",
+          "FAAA",
+          "FAAAA",
+          "FAAAAA",
+          "FAAAAAA",
+          "FAAAAAAA!",
+        ];
+        let i = 0;
+        text.textContent = "";
+        const interval = setInterval(() => {
+          if (i < letters.length) text.textContent = letters[i++];
+          else clearInterval(interval);
+        }, 300);
+
+        btn.classList.add("screaming");
+        document.body.classList.add("flashing");
+        setTimeout(() => {
+          btn.classList.remove("screaming");
+          document.body.classList.remove("flashing");
+          text.textContent = "";
+        }, 2500);
+      }
+      btn.addEventListener("click", playFaaa);
+    </script>
+  </body>
+</html>
